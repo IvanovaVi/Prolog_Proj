@@ -17,6 +17,8 @@ woman(bozhedara).
 woman(broneslava).
 woman(veselina).
 woman(zdislava).
+woman(margo).
+woman(vladlena).
 
 parent(voeneg,ratibor).
 parent(voeneg,bratislava).
@@ -48,6 +50,11 @@ parent(duhovlad,zlatomir).
 parent(zhdana,zdislava).
 parent(zhdana,zlatomir).
 
+parent(ratibor, margo).
+parent(zhdana, margo).
+parent(ratibor, vladlena).
+parent(zhdana, vladlena).
+
 /*Задание 1
 1) Построить предикаты men и women, которые выводят на экран всех мужчин и всех женщин соответственно.*/
 men():- man(X), print(X), nl, fail.
@@ -72,3 +79,41 @@ brothers(X) :- setof(Y, brother(Y, X), Brothers), print(Brothers).
 
 b_s(X,Y) :- parent(Z,X), parent(Z,Y), X \= Y.
 b_s(X) :- setof(Y, b_s(X,Y), Siblings), print(Siblings), nl, fail.
+
+
+/*Задание 2, вариант 4
+1) Построить предикат father(X, Y), который проверяет, является ли X отцом Y.
+    1.1) Построить предикат, father(X), который выводит отца X.*/
+father(X,Y) :- man(X), parent(X,Y).
+father(X) :- father(Y,X), print(Y), nl, fail.
+
+/*2) Построить предикат wife(X, Y), который проверяет, является ли X женой Y.
+    2.1) Построить предикат wife(X), который выводит жену X.*/
+wife(X,Y) :- woman(X), parent(X,Z), parent(Y,Z), X \= Y.
+wife(X) :- setof(Y, wife(Y,X), Wife), print(Wife), nl, fail.
+
+
+sister(X,Y) :- parent(Z,Y), parent(Z,X), woman(X), woman(Z), X\=Y.
+
+/*Задание 3, вариант 4
+1) Построить предикат grand_da(X, Y), который проверяет, является ли X внучкой Y (без использования готовых предикатов).
+    1.1) Построить предикат grand_dats(X), который выводит всех внучек X (без использования готовых предикатов).*/
+grand_da(X,Y) :- parent(Y,Z), parent(Z,X), woman(X).
+%grand_dats(X) :- parent(X,Z), parent(Z,Q), woman(Q), print(Q) , nl, fail.
+
+/*1.2) Построить предикат grand_dats(X), который выводит всех внучек X (с использованием готовых предикатов).*/
+grand_dats(X) :- setof(Y, grand_da(Y,X), Grandau), print(Grandau), nl, fail.
+
+/*2) Построить предикат grand_pa_and_da(X,Y), который проверяет, являются ли X и Y дедушкой и внучкой или внучкой и дедушкой (без использования готовых предикатов).*/
+grand_pa_and_da(X,Y) :- parent(Y,Z), parent(Z,X), woman(X), man(Y); parent(X,Z), parent(Z,Y), woman(Y), man(X).
+
+/*2.1) Построить предикат grand_pa_and_da(X,Y), который проверяет, являются ли X и Y дедушкой и внучкой или внучкой и дедушкой (с использованием готовых предикатов).*/
+grand_pa_and_da(X,Y) :- grand_da(X,Y), man(Y); grand_da(Y,X), man(X).
+
+/*3) Построить предикат, который проверяет, является ли X тетей Y (без использования готовых предикатов).*/
+aunt(X,Y) :- parent(Q,Y), parent(P,Z), parent(P,X), woman(X), woman(Q), woman(P), X\=Q.
+
+/*3.1) Построить предикат, который проверяет, является ли X тетей Y (с использованием готовых предикатов).*/
+aunt(X,Y) :- parent(Z,Y), sister(X,Z), woman(Z), X\=Z.
+
+/*3.1) Построить предикат, который выводит всех тетей X.*/
