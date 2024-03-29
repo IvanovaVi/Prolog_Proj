@@ -117,3 +117,7 @@ aunt(X,Y) :- parent(Q,Y), parent(P,Z), parent(P,X), woman(X), woman(Q), woman(P)
 aunt(X,Y) :- parent(Z,Y), sister(X,Z), woman(Z), X\=Z.
 
 /*3.1) Построить предикат, который выводит всех тетей X.*/
+aunt_1(X,Y) :- parent(Z,Y), sister(X,Z), woman(Z), X\=Z.
+
+/*3.2) Построить предикат, который выводит всех тетей X.*/
+auntes(X) :- setof(Q, aunt(Q,X), Auntes), print(Auntes), nl, fail.
