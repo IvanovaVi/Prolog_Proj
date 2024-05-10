@@ -91,3 +91,66 @@ sum_numb_del([H|T], X, Numb):-
     sum_numb_del(T, X, Numb). 
 sum_numb_del([H|X], [H|Y], Numb) :- sum_numb_del(X, Y, Numb).
 
+
+%Задание 2, вариант 4
+%Найти произведение цифр числа.
+mult_numb(Numb, Res) :- mult_numb(Numb, 10, Res).
+
+mult_numb(0, Res, Res) :- !.
+
+mult_numb(Numb, Mult, Res) :- 
+    Dig is Numb mod 10,
+    Dig * Mult,
+    Numb_temp is Numb div 10,
+    mult_numb(Numb_temp, Dig, Res).
+
+mult_numb(Numb, Mult, Res) :-
+    Numb_temp is Numb div 10,
+    mult_numb(Numb_temp, Mult, Res).
+
+
+%Найти максимальную цифру числа, не делящуюся на 3
+max_numb(0, 0):- !.
+max_three(Numb, Max_Dig):-
+    Numb > 0,
+    Numb_1 is Numb mod 10,
+    (
+        Numb_1 mod 3 =:= 0 -> Numb_2 is Numb // 10,
+        max_numb_up(Numb_2, Max_Dig);
+        Numb_2 is Numb // 10, 
+        max_numb_up(Numb_2, New_Max_Dig), 
+        Max_Dig is max(New_Max_Dig, Numb_1)
+    ).
+
+max_numb_down(Numb, Max_Dig):- max_numb_down_help(Numb, 0, Max_Dig).
+
+max_numb_help(0, Dig, Dig):- !.
+
+max_numb_help(Numb, Cur_Dig, Max_Dig):-
+    Numb > 0,
+    Numb_1 is Numb mod 10,
+    (   Numb_1 mod 3 =:= 0 -> Numb_2 is Numb // 10, 
+        max_numb_help(Numb_2, Cur_Dig, Max_Dig);
+        New_Cur_Dig is max(Cur_Dig, Numb_1), 
+        Numb_2 is Numb // 10, 
+        max_numb_help(Numb_2, New_Cur_Dig, Max_Dig)
+    ).
+
+%Найти количество делителей числа
+divis(X, Y) :- 0 is X mod Y.
+
+count_divis(N, Count) :- count_divis(N, 1, 0, Count).
+
+count_divis(N, N, Acc, Count) :- Count is Acc + 1.
+
+count_divis(N, I, Acc, Count) :-
+    I < N,
+    0 is N mod I,
+    New_Acc is Acc + 1,
+    Next_I is I + 1,
+    count_divis(N, Next_I, New_Acc, Count).
+
+count_divis(N, I, Acc, Count) :-
+    I < N,
+    Next_I is I + 1,
+    count_divis(N, Next_I, Acc, Count).
