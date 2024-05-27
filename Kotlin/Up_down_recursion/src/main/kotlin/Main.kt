@@ -75,4 +75,18 @@ class Main{
             }
         }
     }
+
+    //Задание 4--------------------------------------------------------
+    //Функция высших порядков одного аргумента (передается некоторое значение а и лямбда-функция f)
+    fun one_Arg(a: Int,f: (Int) -> Int): Int = f(a)
+
+    //Функция высших порядков двух аргументов
+    fun two_Args(a:Int,b:Int,f:(Int,Int)->Int) = f(a,b)
+
+    fun main() {
+        val scanner = Scanner(`in`)
+        val x: Int = scanner.nextInt()
+        println(one_Arg(x,::max_not_div_3_up))
+    }
 }
+fun main() = Main().main()
